@@ -190,7 +190,7 @@ Calificar leads y agendar llamadas de descubrimiento.
 - Inmersivo: 6 semanas, $6K USD
 - AI Sales: automatización con IA
 - Growth: estrategia de crecimiento`,
-  providerModelId: "deepseek-chat",
+  providerModel: "deepseek-chat",
   maxIterations: 10,
   temperature: 0.7,
 });
@@ -199,7 +199,7 @@ Calificar leads y agendar llamadas de descubrimiento.
 workflow.addNode("schedule_check", {
   type: "decide",
   decisionType: "ai",
-  providerModelId: "deepseek-chat",
+  providerModel: "deepseek-chat",
   conditions: [
     { label: "schedule", description: "Lead wants to schedule a call" },
     { label: "conversation", description: "Continue normal conversation" },
