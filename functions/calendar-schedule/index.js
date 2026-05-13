@@ -7,13 +7,23 @@
 
 async function handler(request, env) {
   const body = await request.json();
-  const { phone, name, email, requestedTime } = body;
+
+  // Extraer datos del contexto de Kapso
+  const executionContext = body.execution_context || {};
+  const vars = executionContext.vars || {};
+  const waCtx = body.whatsapp_context || {};
+  const conversation = waCtx.conversation || {};
+  const context = executionContext.context || {};
+
+  const phone = vars.phone || context.phone_number || conversation.phone_number || "";
+  const name = vars.hubspot_name || "";
+  const email = vars.hubspot_email || "";
+  const requestedTime = body.input?.requestedTime || null;
 
   if (!phone) {
-    return new Response(JSON.stringify({ ok: false, error: "phone required" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(JSON.stringify({
+      vars: { schedule_error: "phone required" }
+    }), { headers: { "Content-Type": "application/json" } });
   }
 
   const GOOGLE_CLIENT_ID = env.GOOGLE_CLIENT_ID;
