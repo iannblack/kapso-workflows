@@ -1,50 +1,46 @@
 /**
- * Route Admin Command — parsea comandos admin y resuelve la acción.
- * 
- * Input: { message: "/command args..." }
- * Output: { action: "command_name", args: [...], decision: "route_label" }
+ * Route Admin Command — parsea comandos y decide acción.
+ * Decide function: debe devolver next_edge.
  */
-
 async function handler(request, env) {
   const body = await request.json();
-  const message = body.message || body.vars?.user_reply || "";
-  const trimmed = message.trim().slice(1).trim(); // Remove leading /
-  const parts = trimmed.split(/\s+/);
+  const ctx = body.execution_context || {};
+  const vars = ctx.vars || {};
+  const msg = vars.user_reply || vars.inbound_message || "";
+  const trimmed = msg.trim();
+  
+  if (!trimmed.startsWith("/")) {
+    return new Response(JSON.stringify({
+      next_edge: "not_command",
+      vars: {}
+    }), { headers: { "Content-Type": "application/json" } });
+  }
+
+  const parts = trimmed.slice(1).split(/\s+/);
   const cmd = parts[0].toLowerCase();
   const args = parts.slice(1);
 
-  // Command map
-  const commandMap = {
-    "help": "help", "h": "help", "comandos": "help", "ayuda": "help",
+  const map = {
+    "help": "help", "h": "help", "ayuda": "help", "comandos": "help",
     "stats": "stats", "status": "stats", "estado": "stats",
-    "leads": "leads", "lead": "leads", "prospectos": "leads",
     "pause": "pause", "pausar": "pause",
     "persona": "persona", "personalidad": "persona",
     "persona_set": "persona_set",
-    "company": "company", "empresa": "company", "conocimiento": "company",
+    "company": "company", "empresa": "company",
     "company_set": "company_set",
     "model": "model", "modelo": "model",
     "model_set": "model_set",
-    "stages": "stage", "etapas": "stage",
-    "stage": "stage",
-    "stage_set": "stage_set",
-    "behavior": "behavior", "comportamiento": "behavior",
     "invite": "invite", "invitar": "invite",
-    "blacklist": "blacklist", "bloquear": "blacklist", "ban": "blacklist",
-    "unblacklist": "unblacklist", "desbloquear": "unblacklist", "unban": "unblacklist",
+    "blacklist": "blacklist", "bloquear": "blacklist",
+    "unblacklist": "unblacklist", "desbloquear": "unblacklist",
     "typeform": "typeform", "tf": "typeform",
-    "typeform_sync": "typeform_sync", "tfsync": "typeform_sync",
-    "typeform_send": "typeform_send", "tfsend": "typeform_send",
     "set_admin_phone": "set_admin", "admin": "set_admin",
   };
 
-  const action = commandMap[cmd] || "unknown";
+  const action = map[cmd] || "unknown";
 
   return new Response(JSON.stringify({
-    action,
-    args,
-    cmd,
     next_edge: action,
-    vars: { admin_action: action, admin_args: args }
+    vars: { admin_action: action, admin_args: args.join(" "), admin_cmd: cmd }
   }), { headers: { "Content-Type": "application/json" } });
 }
