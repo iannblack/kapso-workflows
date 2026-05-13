@@ -12,7 +12,7 @@ async function handler(request, env) {
 
   if (processedIndex >= leads.length) {
     return new Response(JSON.stringify({
-      decision: "no_new",
+      next_edge: "no_new",
       lead: null,
       nextIndex: processedIndex,
     }), { headers: { "Content-Type": "application/json" } });
@@ -22,7 +22,7 @@ async function handler(request, env) {
 
   if (!lead.qualified) {
     return new Response(JSON.stringify({
-      decision: "low_score",
+      next_edge: "low_score",
       lead,
       nextIndex: processedIndex + 1,
     }), { headers: { "Content-Type": "application/json" } });
@@ -42,7 +42,7 @@ async function handler(request, env) {
       const existing = await res.json();
       if (existing?.[0]?.kapso_sent) {
         return new Response(JSON.stringify({
-          decision: "no_new",
+          next_edge: "no_new",
           lead,
           nextIndex: processedIndex + 1,
         }), { headers: { "Content-Type": "application/json" } });
@@ -51,7 +51,7 @@ async function handler(request, env) {
   }
 
   return new Response(JSON.stringify({
-    decision: "qualified",
+    next_edge: "qualified",
     lead,
     nextIndex: processedIndex + 1,
   }), { headers: { "Content-Type": "application/json" } });

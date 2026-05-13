@@ -20,6 +20,7 @@ async function handler(request, env) {
   return new Response(JSON.stringify({
     isAdmin,
     isCommand,
-    decision: isCommand ? "admin_command" : "normal_message",
+    next_edge: isCommand ? "admin_command" : "normal_message",
+    vars: { is_admin: isAdmin, is_command: isCommand }
   }), { headers: { "Content-Type": "application/json" } });
 }

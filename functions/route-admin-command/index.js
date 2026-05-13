@@ -44,6 +44,7 @@ async function handler(request, env) {
     action,
     args,
     cmd,
-    decision: action,
+    next_edge: action,
+    vars: { admin_action: action, admin_args: args }
   }), { headers: { "Content-Type": "application/json" } });
 }

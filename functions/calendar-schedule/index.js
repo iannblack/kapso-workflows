@@ -166,16 +166,19 @@ async function handler(request, env) {
                      eventData?.hangoutLink || null;
 
     return new Response(JSON.stringify({
-      ok: true,
-      closerName,
-      slot: {
-        start: slotStart.toISOString(),
-        end: slotEnd.toISOString(),
+      vars: {
+        closer_name: closerName,
+        slot_start: slotStart.toISOString(),
+        slot_end: slotEnd.toISOString(),
+        meet_link: meetLink,
       },
-      meetLink,
+      ok: true,
     }), { headers: { "Content-Type": "application/json" } });
   } catch (e) {
-    return new Response(JSON.stringify({ ok: false, error: e.message }), {
+    return new Response(JSON.stringify({
+      vars: { schedule_error: e.message },
+      ok: false,
+    }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
