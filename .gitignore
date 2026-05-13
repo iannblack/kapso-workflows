@@ -1,0 +1,5 @@
+node_modules/
+.kapso/remote-map.json
+dist/
+*.log
+.env

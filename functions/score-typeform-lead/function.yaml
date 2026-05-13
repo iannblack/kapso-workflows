@@ -1,0 +1,6 @@
+name: Score Typeform Lead
+slug: score-typeform-lead
+description: Score Typeform leads and extract data
+runtime: nodejs
+memory: 128
+timeout: 10

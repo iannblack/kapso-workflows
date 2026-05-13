@@ -1,0 +1,6 @@
+name: Route Admin Command
+slug: route-admin-command
+description: Parse and route admin WhatsApp commands
+runtime: nodejs
+memory: 128
+timeout: 5

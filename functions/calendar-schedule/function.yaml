@@ -1,0 +1,6 @@
+name: Calendar Schedule
+slug: calendar-schedule
+description: Find available slot and create Google Calendar event for lead
+runtime: nodejs
+memory: 256
+timeout: 15

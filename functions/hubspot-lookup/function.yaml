@@ -1,0 +1,6 @@
+name: HubSpot Lookup
+slug: hubspot-lookup
+description: Look up a contact in HubSpot by phone number
+runtime: nodejs
+memory: 128
+timeout: 10

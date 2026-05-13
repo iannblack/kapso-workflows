@@ -1,0 +1,6 @@
+name: Check Lead Qualification
+slug: check-lead-qualification
+description: Check if scored leads meet the qualification threshold
+runtime: nodejs
+memory: 128
+timeout: 5
