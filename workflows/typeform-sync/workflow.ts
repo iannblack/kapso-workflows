@@ -22,6 +22,11 @@ workflow.addTrigger({
   active: true,
 });
 
+// ── Start node ───────────────────────────────────────────────────────────
+workflow.addNode(START, {
+  position: { x: 100, y: 100 },
+});
+
 // ── Sync Typeform leads ──────────────────────────────────────────────────
 workflow.addNode("fetch_typeform", {
   type: "webhook",
